@@ -1,7 +1,7 @@
 #!/usr/bin/make
 
 # DO NOT USE IT
-
+#test
 
 rpi2-thinclient:
         # Logging?
