@@ -129,12 +129,7 @@ MISSING_PACKAGES=""
 
 # Packages required in the chroot build environment
 APT_INCLUDES=${APT_INCLUDES:=""}
-
-if [ ${DISTRIBUTION} = "raspbian" ] ; then
-  APT_INCLUDES="${APT_INCLUDES},apt-transport-https,apt-utils,ca-certificates,raspbian-archive-keyring,dialog,sudo"
-else
-  APT_INCLUDES="${APT_INCLUDES},apt-transport-https,apt-utils,ca-certificates,debian-archive-keyring,dialog,sudo"
-fi
+APT_INCLUDES="${APT_INCLUDES},apt-transport-https,apt-utils,ca-certificates,dialog,sudo"
 
 set +x
 
@@ -223,6 +218,17 @@ set -x
 
 # Call "cleanup" function on various signals and errors
 trap cleanup 0 1 2 3 6
+
+######################
+####START PACKAGES####
+######################
+
+# Add distribution specific keyring package
+if [ ${DISTRIBUTION} = "raspbian" ] ; then
+  APT_INCLUDES="${APT_INCLUDES},raspbian-archive-keyring"
+else
+  APT_INCLUDES="${APT_INCLUDES},debian-archive-keyring"
+fi
 
 # Add required packages for the minbase installation
 if [ "$ENABLE_MINBASE" = true ] ; then

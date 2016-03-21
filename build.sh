@@ -27,6 +27,17 @@ export ENABLE_WM="xfce4"
 export APT_SERVER=mirrordirector.raspbian.org
 export DISTRIBUTION=raspbian
 
+# set debootstrap flag for raspbianrepokey if raspbian
+export REPOKEY=""
+if [ "$DISTRIBUTION" = raspbian ] ; then
+ REPOKEY="files/apt/raspbianrepokey.gpg"
+  if [ -f $REPOKEY ] ; then
+  rm $REPOKEY
+  fi
+ wget -O - $APT_SERVER/raspbian.public.key | gpg --no-default-keyring --keyring $REPOKEY --import
+ export REPOKEY="--keyring ${REPOKEY}"
+fi
+
 if [ "$BUILD_LOG" = true ] ; then
   script -c './rpi2-gen-image.sh' ./build.log
 else
