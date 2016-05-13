@@ -10,7 +10,7 @@ The following list of Debian packages must be installed on the build system beca
 ## Command-line parameters
 The script accepts certain command-line parameters to enable or disable specific OS features, services and configuration settings. These parameters are passed to the `rpi2-gen-image.sh` script via (simple) shell-variables. Unlike environment shell-variables (simple) shell-variables are defined at the beginning of the command-line call of the `rpi2-gen-image.sh` script.
 
-#####Command-line examples:
+##### Command-line examples:
 ```shell
 ENABLE_UBOOT=true ./rpi2-gen-image.sh
 ENABLE_CONSOLE=false ENABLE_IPV6=false ./rpi2-gen-image.sh
@@ -115,9 +115,6 @@ in journal files)
 ##### `ENABLE_SOUND`=true
 Enable sound hardware and install Advanced Linux Sound Architecture.
 
-##### `ENABLE_VCHIQ`=true
-Enable vchiq(GPU) hardware.
-
 ##### `ENABLE_HWRANDOM`=true
 Enable Hardware Random Number Generator. Strong random numbers are important for most network based communications that use encryption. It's recommended to be enabled.
 
@@ -196,6 +193,17 @@ Run `make bcm2709_defconfig` (and optional `make menuconfig`) to configure the k
 ##### `KERNELSRC_PREBUILT`=false
 With this parameter set to true the script expects the existing kernel sources directory to be already successfully cross-compiled. The parameters `KERNELSRC_CLEAN`, `KERNELSRC_CONFIG` and `KERNEL_MENUCONFIG` are ignored and no kernel compilation tasks are performed.
 
+### IT4S Custom ###
+##### `ENABLE_CITRIX`=false
+With this parameter set to true the script install all necessary dependencies and the citrix receiver and usb support.
+
+##### `ENABLE_CITRIX_CUSTOM_CERT`=false
+It's possible to deploy customer certificates for citrix receiver
+
+##### `ENABLE_AUTOMOUNT`=false
+Activate automounting of usb-devices with udisks-glue.
+
+
 ## Understanding the script
 The functions of this script that are required for the different stages of the bootstrapping are split up into single files located inside the `bootstrap.d` directory. During the bootstrapping every script in this directory gets executed in lexicographical order:
 
@@ -227,6 +235,23 @@ All the required configuration files that will be copied to the generated OS ima
 | `network` | Networking configuration files |
 | `sysctl.d` | Swapping and Network Hardening configuration |
 | `xorg` | fbturbo Xorg driver configuration |
+
+### Custom files and directories
+All scripts are located in the directory `custom.d`. During the bootstrapping every script in this directory gets executed in lexicographical order:
+| Script | Description |
+| --- | ---|
+| `10-kernel.sh` | Set options for booting and kernel |
+| `11-systemd.sh` | Setup systemd services |
+| `20-desktop.sh` | Setup kiosk-desktop |
+| `30-citrix.sh` | Install and setup citrix receiver |
+| `90-apt.sh` | Install packages from repository |
+
+All the required configuration files and packages that will be copies to the generated OS image are located inside the `files` directoy.
+
+| Directory | Description |
+| --- | --- |
+| `Citrix` | Packages of citrix receiver and usb support |
+| `Certificates` | Stored all certificates for the customer. Maybe we create subfolders for every customer |
 
 ## Logging of the bootstrapping process
 All information related to the bootstrapping process and the commands executed by the `rpi2-gen-image.sh` script can easily be saved into a logfile. The common shell command `script` can be used for this purpose:

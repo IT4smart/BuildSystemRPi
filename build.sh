@@ -23,9 +23,14 @@ export XKB_LAYOUT="de"
 export ENABLE_IPV6=false
 export ENABLE_CONSOLE=false
 export ENABLE_SPLASH=false
+export ENABLE_VCHIQ=true
 export ENABLE_WM="xfce4"
 export APT_SERVER=mirrordirector.raspbian.org
 export DISTRIBUTION=raspbian
+#export NET_NTP_1=172.16.0.1
+export ENABLE_CITRIX=true
+export ENABLE_CITRIX_CUSTOM_CERT=true
+export ENABLE_AUTOMOUNT=true
 
 # set debootstrap flag for raspbianrepokey if raspbian
 export REPOKEY=""

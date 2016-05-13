@@ -1,0 +1,4 @@
+[Allow plugdev to automount via udisks]
+Identity=unix-group:plugdev
+Action=org.freedesktop.udisks.filesystem-mount
+ResultAny=yes

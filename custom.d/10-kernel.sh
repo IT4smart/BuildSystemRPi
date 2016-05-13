@@ -1,7 +1,8 @@
 #
-# Set packages for kernel modules
+# Set packages for kernel modules and booting
 #
 
-if [ "$ENABLE_VCHIQ" = true ] ; then
-  APT_INCLUDES="${APT_INCLUDES} libraspberrypi0"
+# Disable rainbow splash
+if [ "$ENABLE_SPLASH" = false ] ; then
+  sed -i "s/^#disable_splash=1/disable_splash=1/" "$R/boot/firmware/config.txt"
 fi

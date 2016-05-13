@@ -2,15 +2,21 @@
 # http://www.raspberrypi.org/documentation/configuration/config-txt.md
 # Some settings may impact device functionality. See link above for details
 
+# wait n-seconds till boot
+boot_delay=1
+
 # disable rainbow
 #disable_splash=1
+
+# avoid safe mode
+avoid_safe_mode=1
 
 # uncomment if you get no picture on HDMI for a default "safe" mode
 #hdmi_safe=1
 
 # uncomment this if your display has a black border of unused pixels visible
 # and your display can output without overscan
-#disable_overscan=1
+disable_overscan=1
 
 # uncomment the following to adjust overscan. Use positive numbers if console
 # goes off screen, and negative if there is too much border
@@ -44,3 +50,4 @@
 
 # uncomment to overclock the arm. 700 MHz is the default.
 #arm_freq=800
+gpu_mem=256

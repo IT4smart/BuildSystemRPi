@@ -96,7 +96,7 @@ else # BUILD_KERNEL=false
   chroot_exec apt-get -qq -y --no-install-recommends install linux-image-"${COLLABORA_KERNEL}" raspberrypi-bootloader-nokernel
 
   # Install flash-kernel last so it doesn't try (and fail) to detect the platform in the chroot
-  chroot_exec apt-get -qq -y install flash-kernel
+  #chroot_exec apt-get -qq -y install flash-kernel
 
   VMLINUZ="$(ls -1 $R/boot/vmlinuz-* | sort | tail -n 1)"
   [ -z "$VMLINUZ" ] && exit 1
@@ -128,12 +128,7 @@ install_readonly files/boot/config.txt "$R/boot/firmware/config.txt"
 
 # Setup minimal GPU memory allocation size: 16MB (no X)
 if [ "$ENABLE_MINGPU" = true ] ; then
-  echo "gpu_mem=16" >> "$R/boot/firmware/config.txt"
-fi
-
-# Disable rainbow splash
-if [ "$ENABLE_SPLASH" = false ] ; then
-  sed -i "s/^#disable_splash=1/disable_splash=1/" "$R/boot/firmware/config.txt"
+  sed -i "s/^gpu_mem=256/gpu_mem=16/" "$R/boot/firmware/config.txt"
 fi
 
 # Create firmware configuration and cmdline symlinks
@@ -152,11 +147,6 @@ fi
 # Load sound module at boot
 if [ "$ENABLE_SOUND" = true ] ; then
   sed -i "s/^# snd_bcm2835/snd_bcm2835/" "$R/lib/modules-load.d/rpi2.conf"
-fi
-
-# Load vchiq (kernel driver for gpu) module at boot
-if [ "$ENABLE_VCHIQ" = true ] ; then
-  sed -i "s/^# vchiq/vchiq/" "$R/lib/modules-load.d/rpi2.conf"
 fi
 
 # Install kernel modules blacklist
