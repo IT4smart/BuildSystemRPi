@@ -31,7 +31,7 @@ fi
 # certificate management
 if [ "$ENABLE_CITRIX" = true ] ; then
   # copy all certificates from citrix keystore to /etc/ssl/certs
-  chroot_exec cp /opt/Citrix/ICAClient/keystore/cacerts/*.pem /etc/ssl/certs/
+  chroot_exec cp -r /opt/Citrix/ICAClient/keystore/cacerts/ /etc/ssl/certs
 
   # remove old certificate folder from citrix
   chroot_exec rm -R /opt/Citrix/ICAClient/keystore/cacerts
