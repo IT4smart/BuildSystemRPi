@@ -3,28 +3,20 @@
 # DO NOT USE IT
 #test
 
-rpi2-thinclient:
-        # Logging?
-        export BUILD_LOG=true
+all:
+	@echo 'Specify a target and project:\nmake rpi2-thinclient\nmake rpi2-mirror\'
 
-        # set customization options
-        export DEFLOCAL="de_DE.UTF-8"
-        export XKB_LAYOUT="de"
-        export ENABLE_IPV6=false
-        export ENABLE_CONSOLE=false
-        export ENABLE_SPLASH=false
-        export ENABLE_WM="xfce4"
-        export APT_SERVER=mirrordirector.raspbian.org
-        export DISTRIBUTION=raspbian
-	    ./build.sh
+rpi2-thinclient:
+	sudo bash build.sh "rpi2" "ass"
 
 rpi2-mirror:
-	    ./build.sh
+	sudo bash build.sh
 
 help:
-        @echo   'Cleaning target:'
-        @echo   ' clean           - Remove most generated files but keep the logs'
-        @echo   ' mrproper        - Remove all generated files + logs'
+	@echo   'Cleaning target:'
+	@echo   ' clean           - Remove most generated files but keep the logs'
+	@echo   ' mrproper        - Remove all generated files + logs'
 
 clean:
-	    rm -rf ./images
+	sudo rm -rf ./images
+	sudo rm build.log
