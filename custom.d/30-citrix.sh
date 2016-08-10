@@ -29,24 +29,24 @@ if [ "$ENABLE_CITRIX" = true ] ; then
 fi
 
 # certificate management
-#if [ "$ENABLE_CITRIX" = true ] ; then
+if [ "$ENABLE_CITRIX" = true ] ; then
   # copy all certificates from citrix keystore to /etc/ssl/certs
-  #chroot_exec cp /opt/Citrix/ICAClient/keystore/cacerts/*.pem /etc/ssl/certs/
+  chroot_exec cp -r /opt/Citrix/ICAClient/keystore/cacerts/ /etc/ssl/certs
 
   # remove old certificate folder from citrix
-  #chroot_exec rm -R /opt/Citrix/ICAClient/keystore/cacerts
+  chroot_exec rm -R /opt/Citrix/ICAClient/keystore/cacerts
 
   # create symbolic link
-  #chroot_exec ln -s /etc/ssl/certs /opt/Citrix/ICAClient/keystore/cacerts
-#fi
+  chroot_exec ln -s /etc/ssl/certs /opt/Citrix/ICAClient/keystore/cacerts
+fi
 
 # custom certificates from customer.
-#if [ "$ENABLE_CITRIX_CUSTOM_CERT" = true ] ; then
+if [ "$ENABLE_CITRIX_CUSTOM_CERT" = true ] ; then
   # copy custom certificates
-#  cp custom.d/files/Certificates/*.pem "$R/etc/ssl/certs/"
-#fi
+  cp custom.d/files/Certificates/*.pem "$R/etc/ssl/certs/"
+fi
 
 # rehash all certificates
-#if [ "$ENABLE_CITRIX" = true ] ; then
-  #chroot_exec c_rehash /opt/Citrix/ICAClient/keystore/cacerts
-#fi
+if [ "$ENABLE_CITRIX" = true ] ; then
+  chroot_exec c_rehash /opt/Citrix/ICAClient/keystore/cacerts
+fi
