@@ -15,9 +15,9 @@ fi
 install_readonly files/apt/flash-kernel "$R/etc/apt/preferences.d/flash-kernel"
 
 # Upgrade collabora package index and install collabora keyring
-echo "deb https://repositories.collabora.co.uk/debian ${RELEASE} rpi2" > "$R/etc/apt/sources.list"
-chroot_exec apt-get -qq -y update
-chroot_exec apt-get -qq -y --force-yes install collabora-obs-archive-keyring
+#echo "deb https://repositories.collabora.co.uk/debian ${RELEASE} rpi2" > "$R/etc/apt/sources.list"
+#chroot_exec apt-get -qq -y update
+#chroot_exec apt-get -qq -y --force-yes install collabora-obs-archive-keyring
 
 # Install APT sources.list
 install_readonly files/apt/sources.list "$R/etc/apt/sources.list"

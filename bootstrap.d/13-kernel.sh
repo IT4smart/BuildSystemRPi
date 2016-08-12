@@ -98,9 +98,15 @@ else # BUILD_KERNEL=false
   # Install flash-kernel last so it doesn't try (and fail) to detect the platform in the chroot
   #chroot_exec apt-get -qq -y install flash-kernel
 
-  VMLINUZ="$(ls -1 $R/boot/vmlinuz-* | sort | tail -n 1)"
-  [ -z "$VMLINUZ" ] && exit 1
-  cp "$VMLINUZ" "$R/boot/firmware/kernel7.img"
+  # Check if kernel installation was successful
+  VMLINUZ="$(ls -1 ${R}/boot/vmlinuz-* | sort | tail -n 1)"
+  if [ -z "$VMLINUZ" ] ; then
+    echo "error: kernel installation failed! (/boot/vmlinuz-* not found)"
+    cleanup
+    exit 1
+  fi
+  # Copy vmlinuz kernel to the boot directory
+  install_readonly "${VMLINUZ}" "$R/boot/${KERNEL_IMAGE}"
 fi
 
 # Setup firmware boot cmdline
@@ -121,19 +127,19 @@ if [ "$ENABLE_IPV6" = false ] ; then
 fi
 
 # Install firmware boot cmdline
-echo "${CMDLINE}" > "$R/boot/firmware/cmdline.txt"
+echo "${CMDLINE}" > "$R/boot/cmdline.txt"
 
 # Install firmware config
-install_readonly files/boot/config.txt "$R/boot/firmware/config.txt"
+install_readonly files/boot/config.txt "$R/boot/config.txt"
 
 # Setup minimal GPU memory allocation size: 16MB (no X)
 if [ "$ENABLE_MINGPU" = true ] ; then
-  sed -i "s/^gpu_mem=256/gpu_mem=16/" "$R/boot/firmware/config.txt"
+  sed -i "s/^gpu_mem=256/gpu_mem=16/" "$R/boot/config.txt"
 fi
 
 # Create firmware configuration and cmdline symlinks
-ln -sf firmware/config.txt "$R/boot/config.txt"
-ln -sf firmware/cmdline.txt "$R/boot/cmdline.txt"
+#ln -sf firmware/config.txt "$R/boot/config.txt"
+#ln -sf firmware/cmdline.txt "$R/boot/cmdline.txt"
 
 # Install and setup kernel modules to load at boot
 mkdir -p "$R/lib/modules-load.d/"
