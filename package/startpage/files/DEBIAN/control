@@ -1,7 +1,0 @@
-Origin: IT4S
-Version: 0.9.1
-Section: utils
-Essential: No
-Priority: required
-Maintainer: Alexander Racic <alexander.racic@it4s.eu>
-Description: Mainscreen where the user can sign in to any remote system

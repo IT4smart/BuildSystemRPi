@@ -3,10 +3,6 @@
 # Load utility functions
 . ../../functions.sh
 
-NUM_CPUS=`nproc`
-echo "###############"
-echo "### Using ${NUM_CPUS} cores"
-
 # Config for chroot
 APT_SERVER=mirrordirector.raspbian.org
 DISTRIBUTION=raspbian
@@ -14,8 +10,6 @@ RELEASE_ARCH=armhf
 RELEASE=jessie
 QEMU_BINARY=/usr/bin/qemu-arm-static
 
-# Packages to build it
-APT_INCLUDES=qt5-default,cmake
 
 R=$(pwd)/build/chroot
 SRC_DIR=/tmp
@@ -39,7 +33,7 @@ fi
 
 function prepare_build_env() {  
 
-    APT_INCLUDES=apt-transport-https,apt-utils,ca-certificates,dialog,sudo,git,build-essential,bc,raspbian-archive-keyring
+    APT_INCLUDES=apt-transport-https,apt-utils,ca-certificates,dialog,sudo,git,build-essential,bc,raspbian-archive-keyring,qt5-default,cmake
 
     # Base debootstrap
     http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" $REPOKEY --foreign --include="${APT_INCLUDES}" "${RELEASE}" "$R" "http://${APT_SERVER}/${DISTRIBUTION}"
@@ -82,28 +76,22 @@ function dpkg_build()
 ## MAIN 
 #########
 echo -e "Prepare environment"
+sudo rm -rf "${R}" > /dev/null 2>&1
 get_repo_key
 prepare_build_env
-chroot_exec apt-get -qq -y update 
-chroot_exec apt-get install -qq -y "${APT_INCLUDES}"
 
-git clone -b alex http://devbase.it4s.eu:3000/IT4S/StartPage.git "${R}/${SRC_DIR}"
+# old. later we make a pull request and merge the forked repo with the develop and alex branch
+#git clone -b alex http://build.service:123456@devbase.it4s.eu:3000/IT4S/StartPage.git "${R}${SRC_DIR}"
+
+# new forked repo for StartPage
+git clone -b alex http://build.service:123456@devbase.it4s.eu:3000/raphael.lekies/StartPage.git "${R}${SRC_DIR}"
 
 # build 
 echo -e "Building IT4S - Startpage for $1"
-chroot_exec cmake "${SRC_DIR}"
-chroot_exec make -C "${SRC_DIR}"
+chroot_exec make -C "${SRC_DIR}" armv7
 
-sed '/Package/d' -i files/DEBIAN/control
-sed '/Depends/d' -i files/DEBIAN/control
-echo "Package: ${1}-startpage" >> files/DEBIAN/control
-echo "Depends: qt5-default" >> files/DEBIAN/control
-
-mkdir -p files/opt/IT4S/startpage/StartPage
-cp -ar "${R}/${SRC_DIR}/StartPage/bin" files/opt/IT4S/startpage/StartPage
-cp -ar "${R}/${SRC_DIR}/Ressources" files/opt/IT4S/startpage
-fix_arch_ctl "files/DEBIAN/control"
-dpkg_build files "${1}-startpage.deb"
+# copy debian package from build directory to root
+cp "${R}${SRC_DIR}/${1}-startpage.deb" $(pwd)
 
 echo -e "Cleaning up"
 cleanup
