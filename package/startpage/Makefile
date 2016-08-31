@@ -5,7 +5,7 @@ armv7:
 	script -c 'sudo bash build.sh \"armv7\"' ./build.log
 
 pc:
-	script -c 'sudo bash build.sh \"i686\"' ./build.log
+	script -c 'sudo bash build.sh i686' ./build.log
 
 clean:
 	sudo rm -rf files/opt/IT4S > /dev/null 2>&1
