@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Are we running as root?
-if [ "$(id -u)" -ne "0" ] ; then
-  echo "error: this script must be executed with root privileges!"
-  exit 1
-fi
+#if [ "$(id -u)" -ne "0" ] ; then
+#  echo "error: this script must be executed with root privileges!"
+#  exit 1
+#fi
 
 # Check if ./functions.sh script exists
 if [ ! -r "../../functions.sh" ] ; then
