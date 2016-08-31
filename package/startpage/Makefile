@@ -1,8 +1,8 @@
 all:
-	@echo "Specify a target:\nmake i686\nmake rpi2"
+	@echo "Specify a target:\nmake i686\nmake armv7"
 
-rpi2:
-	script -c 'sudo bash build.sh \"rpi2\"' ./build.log
+armv7:
+	script -c 'sudo bash build.sh \"armv7\"' ./build.log
 
 pc:
 	script -c 'sudo bash build.sh \"i686\"' ./build.log

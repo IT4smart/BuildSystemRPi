@@ -4,11 +4,23 @@
 . ../../functions.sh
 
 # Config for chroot
-APT_SERVER=mirrordirector.raspbian.org
-DISTRIBUTION=raspbian
-RELEASE_ARCH=armhf
-RELEASE=jessie
-QEMU_BINARY=/usr/bin/qemu-arm-static
+
+if [ "${1}" = armv7 ] ; then
+    APT_SERVER=mirrordirector.raspbian.org
+    DISTRIBUTION=raspbian
+    RELEASE_ARCH=armhf
+    RELEASE=jessie
+    QEMU_BINARY=/usr/bin/qemu-arm-static
+elif [ "${1}" = i686 ] ; then
+    APT_SERVER=httpredir.debian.org
+    DISTRIBUTION=debian
+    RELEASE_ARCH=i686
+    RELEASE=jessie
+    QEMU_BINARY=/usr/bin/qemu-i386-static
+else
+    echo -e "The architecture is not supported"
+    exit 1
+fi
 
 
 R=$(pwd)/build/chroot
@@ -53,24 +65,6 @@ function prepare_build_env() {
     mount --bind /dev/pts "$R/dev/pts"
 }
 
-# build some functions
-function fix_arch_ctl()
-{
-	sed '/Architecture/d' -i $1
-	test $(arch)x == i686x && echo "Architecture: i386" >> $1
-	test $(arch)x == armv7lx && echo "Architecture: armhf" >> $1
-	test $(arch)x == x86_64x && echo "Architecture: amd64" >> $1
-	sed '$!N; /^\(.*\)\n\1$/!P; D' -i $1
-}
-function dpkg_build()
-{
-	# Calculate package size and update control file before packaging.
-	if [ ! -e "$1" -o ! -e "$1/DEBIAN/control" ]; then exit 1; fi
-	sed '/^Installed-Size/d' -i "$1/DEBIAN/control"
-	size=$(du -s --apparent-size "$1" | awk '{print $1}')
-	echo "Installed-Size: $size" >> "$1/DEBIAN/control"
-	dpkg -b "$1" "$2"
-}
 
 #########
 ## MAIN 
@@ -88,7 +82,7 @@ git clone -b alex http://build.service:123456@devbase.it4s.eu:3000/raphael.lekie
 
 # build 
 echo -e "Building IT4S - Startpage for $1"
-chroot_exec make -C "${SRC_DIR}" armv7
+chroot_exec make -C "${SRC_DIR}" "${1}"
 
 # copy debian package from build directory to root
 cp "${R}${SRC_DIR}/${1}-startpage.deb" $(pwd)
