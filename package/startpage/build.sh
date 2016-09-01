@@ -123,7 +123,7 @@ function prepare_build_env() {
 echo -e "Prepare environment"
 sudo rm -rf "${R}" > /dev/null 2>&1
 get_repo_key
-prepare_build_env
+prepare_build_env "${1}"
 
 # old. later we make a pull request and merge the forked repo with the develop and alex branch
 #git clone -b alex http://build.service:123456@devbase.it4s.eu:3000/IT4S/StartPage.git "${R}${SRC_DIR}"
