@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Are we running as root?
-#if [ "$(id -u)" -ne "0" ] ; then
-#  echo "error: this script must be executed with root privileges!"
-#  exit 1
-#fi
+if [ "$(id -u)" -ne "0" ] ; then
+  echo "error: this script must be executed with root privileges!"
+  exit 1
+fi
 
 # Check if ./functions.sh script exists
 if [ ! -r "../../functions.sh" ] ; then
@@ -17,7 +17,7 @@ fi
 
 # Introdruce settings
 set -e
-echo -n -e "\n#\# StartPage Bootstrap Settings\n#\n"
+echo -n -e "\n#\n# StartPage Bootstrap Settings\n#\n"
 set -x
 
 # Config for chroot
@@ -29,7 +29,7 @@ if [ "${1}" = "armv7" ] ; then
     RELEASE=jessie
     QEMU_BINARY=/usr/bin/qemu-arm-static
 elif [ "${1}" = "i686" ] ; then
-    APT_SERVER=httpredir.debian.org
+    APT_SERVER=ftp.de.debian.org
     DISTRIBUTION=debian
     RELEASE_ARCH=i386
     RELEASE=jessie
@@ -91,9 +91,9 @@ function prepare_build_env() {
     # Base debootstrap
     if [ "${1}" = "armv7" ] ; then
         APT_INCLUDES="${APT_INCLUDES},raspbian-archive-keyring"
-        http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" $REPOKEY --foreign --include="${APT_INCLUDES}" "${RELEASE}" "$R" "http://${APT_SERVER}/${DISTRIBUTION}"
+        http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" $REPOKEY --foreign --include="${APT_INCLUDES}" "${RELEASE}" "${R}" "http://${APT_SERVER}/${DISTRIBUTION}"
     else
-        http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" --foreign --include="${APT_INCLUDES}" "${RELEASE}" "$R" "http://${APT_SERVER}/${DISTRIBUTION}"
+        http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" --foreign --include="${APT_INCLUDES}" "${RELEASE}" "${R}" "http://${APT_SERVER}/${DISTRIBUTION}"
     fi
     
     # Copy qemu emulator binary to chroot
@@ -111,9 +111,9 @@ function prepare_build_env() {
     mount -t sysfs none "$R/sys"
     
     # Mount pseudo terminal slave if supported by Debian release
-    if [ -d "${R}/dev/pts" ] ; then
+    #if [ -d "${R}/dev/pts" ] ; then
         mount --bind /dev/pts "${R}/dev/pts"
-    fi
+    #fi
 }
 
 
@@ -124,6 +124,9 @@ echo -e "Prepare environment"
 sudo rm -rf "${R}" > /dev/null 2>&1
 get_repo_key
 prepare_build_env "${1}"
+
+# print architecutre
+chroot_exec dpkg --print-architecture
 
 # old. later we make a pull request and merge the forked repo with the develop and alex branch
 #git clone -b alex http://build.service:123456@devbase.it4s.eu:3000/IT4S/StartPage.git "${R}${SRC_DIR}"

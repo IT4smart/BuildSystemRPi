@@ -41,8 +41,6 @@ if [ ${arch} = "rpi2" ]; then
         #export NET_NTP_1=172.16.0.1
         export ENABLE_CITRIX_CUSTOM_CERT=true
         export COLLABORA_KERNEL=rpi2-rpfv
-        #export BUILD_KERNEL=true
-        #export KERNEL_BRANCH=rpi-4.4.y
     fi
 fi
 

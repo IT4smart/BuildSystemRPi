@@ -4,8 +4,8 @@ all:
 armv7:
 	script -c 'sudo bash build.sh armv7' ./build.log
 
-pc:
-	script -c 'bash build.sh i686' ./build.log
+i686:
+	script -c 'sudo bash build.sh i686' ./build.log
 
 clean:
 	sudo rm -rf files/opt/IT4S > /dev/null 2>&1
