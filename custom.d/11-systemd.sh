@@ -5,6 +5,9 @@
 # Load utility functions
 . ./functions.sh
 
+# enable timesyncd service
+chroot_exec systemctl enable systemd-timesyncd.service
+
 # timesyncd.conf
 if [ -n "$NET_NTP_1"] && [ -n "$NET_NTP_2"] ; then
 	# prepare custom ntp servers

@@ -16,8 +16,6 @@
 
 # Base debootstrap (unpack only)
 #
-# Todo
-# - in future add a all keyrings
 
 if [ "$ENABLE_MINBASE" = true ] ; then
   http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" --variant=minbase $REPOKEY --foreign --include="${APT_INCLUDES}" "${RELEASE}" "$R" "http://${APT_SERVER}/${DISTRIBUTION}"
