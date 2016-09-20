@@ -1,0 +1,7 @@
+# Configpage
+"/opt/IT4S/ConfigPage.sh"
+	shift+control+c
+
+# Terminal
+"/usr/bin/xterm"
+	shift+control+a
