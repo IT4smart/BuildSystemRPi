@@ -34,6 +34,12 @@ elif [ "${1}" = "i686" ] ; then
     RELEASE_ARCH=i386
     RELEASE=jessie
     QEMU_BINARY=/usr/bin/qemu-i386-static
+elif [ "${1}" = "amd64" ] ; then
+    APT_SERVER=ftp.de.debian.org
+    DISTRIBUTION=debian
+    RELEASE_ARCH=amd64
+    RELEASE=jessie
+    QEMU_BINARY=/usr/bin/qemu-x86_64-static
 else
     echo -e "The architecture ${1} is not supported"
     exit 1
