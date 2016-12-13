@@ -13,12 +13,15 @@ APT_INCLUDES="nodm qt5-default psmisc freerdp-x11 xbindkeys"
 chroot_exec apt-get -qq -y install ${APT_INCLUDES}
 
 # install StartPage
-cp custom.d/files/IT4S/armv7-startpage.deb "$R/tmp/armv7-startpage.deb"
+cp custom.d/files/IT4S/startpage_0.9.5_armhf.deb "$R/tmp/armv7-startpage.deb"
 chroot_exec dpkg -i /tmp/armv7-startpage.deb
 
 # install ConfigPage
-cp custom.d/files/IT4S/armv7-configpage.deb "$R/tmp/armv7-configpage.deb"
+cp custom.d/files/IT4S/configpage_0.9.3_armhf.deb "$R/tmp/armv7-configpage.deb"
 chroot_exec dpkg -i /tmp/armv7-configpage.deb
+
+# copy cleanup script
+cp custom.d/files/IT4S/cleanup.sh "$R/opt/IT4S/cleanup.sh"
 
 # configure nodm
 cp custom.d/files/Desktop/nodm "$R/etc/default/nodm"

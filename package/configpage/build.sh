@@ -136,7 +136,7 @@ echo -e "Building IT4S - Configpage for $1"
 chroot_exec make -C "${SRC_DIR}" "${1}"
 
 # copy debian package from build directory to root
-cp "${R}${SRC_DIR}/${1}-configpage.deb" $(pwd)
+cp "${R}${SRC_DIR}/configpage_*.deb" $(pwd)
 
 echo -e "Cleaning up"
 cleanup
