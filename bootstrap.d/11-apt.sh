@@ -25,6 +25,13 @@ sed -i "s/\/archive.raspbian.org\//\/${APT_SERVER}\//" "$R/etc/apt/sources.list"
 sed -i "s/ raspbian/ ${DISTRIBUTION}/" "$R/etc/apt/sources.list"
 sed -i "s/ jessie/ ${RELEASE}/" "$R/etc/apt/sources.list"
 
+# found on raspbian from the foundation.
+if [ "${DISTRIBUTION}" = "raspbian" ] ; then
+    echo "deb http://archive.raspberrypi.org/debian/ jessie main ui" > "$R/etc/apt/sources.list.d/raspi.list"
+    chroot_exec wget -O /tmp/raspberrypi.gpg.key https://archive.raspberrypi.org/debian/raspberrypi.gpg.key
+    chroot_exec apt-key add /tmp/raspberrypi.gpg.key
+fi
+
 # Upgrade package index and update all installed packages and changed dependencies
 chroot_exec apt-get -qq -y update
 chroot_exec apt-get -qq -y -u dist-upgrade
