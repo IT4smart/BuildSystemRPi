@@ -129,7 +129,7 @@ fi
 
 # Custom IT4S
 if [ "$ENABLE_BOOTSPLASH" = true ] ; then
-    CMDLINE="${CMDLINE} console=null fsck.repair=yes quiet splash plymouth.ignore-serial-consoles"
+    CMDLINE="${CMDLINE} console=null logo.nologo fsck.repair=yes quiet splash plymouth.ignore-serial-consoles"
 else
     CMDLINE="${CMDLINE} console=tty1 fsck.repair=yes"
 fi
