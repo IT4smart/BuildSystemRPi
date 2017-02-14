@@ -35,6 +35,7 @@ if [ ${arch} = "rpi2" ]; then
     export DISTRIBUTION=raspbian
     export ENABLE_CITRIX=true
     export ENABLE_AUTOMOUNT=true
+    export ENABLE_BOOTSPLASH=true
     
     # select the customization option for the specific project
     if [ ${project} = "ass" ]; then
@@ -49,7 +50,7 @@ export REPOKEY=""
 if [ "$DISTRIBUTION" = raspbian ] ; then
  REPOKEY="files/apt/raspbianrepokey.gpg"
   if [ -f $REPOKEY ] ; then
-  rm $REPOKEY
+    rm $REPOKEY
   fi
  wget -O - $APT_SERVER/raspbian.public.key | gpg --no-default-keyring --keyring $REPOKEY --import
  export REPOKEY="--keyring ${REPOKEY}"
