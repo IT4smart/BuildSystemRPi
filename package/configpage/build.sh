@@ -135,7 +135,7 @@ prepare_build_env "${1}"
 chroot_exec dpkg --print-architecture
 
 # new forked repo for StartPage
-git clone -b rapha http://build.service:123456@devbase.it4s.eu:3000/IT4S/ConfigurationPage.git "${R}${SRC_DIR}"
+git clone -b rapha http://build.service:123456@devbase.it4s.eu/IT4S/ConfigurationPage.git "${R}${SRC_DIR}"
 
 # build 
 echo -e "Building IT4S - Configpage for $1"

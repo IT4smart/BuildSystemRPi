@@ -27,6 +27,9 @@ if [ "$ENABLE_MINBASE" = false ] ; then
   chroot_exec locale-gen
   chroot_exec update-locale LANG="${DEFLOCAL}"
 
+  #chroot_exec dpkg-reconfigure -f noninteractive locales
+
+
   # Install and setup default keyboard configuration
   if [ "$XKB_MODEL" != "" ] ; then
     sed -i "s/^XKBMODEL.*/XKBMODEL=\"${XKB_MODEL}\"/" "$R/etc/default/keyboard"

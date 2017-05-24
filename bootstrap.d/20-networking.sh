@@ -56,6 +56,9 @@ fi
 # Remove empty settings from network configuration
 sed -i "/.*=\$/d" "$R/etc/systemd/network/eth.network"
 
+# Enable systemd-resolved service
+chroot_exec systemctl enable systemd-resolved
+
 # Enable systemd-networkd service
 chroot_exec systemctl enable systemd-networkd
 
