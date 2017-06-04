@@ -34,6 +34,12 @@ elif [ "${1}" = "i686" ] ; then
     RELEASE_ARCH=i386
     RELEASE=jessie
     QEMU_BINARY=/usr/bin/qemu-i386-static
+elif [ "${1}" = "amd64" ] ; then
+    APT_SERVER=ftp.de.debian.org
+    DISTRIBUTION=debian
+    RELEASE_ARCH=amd64
+    RELEASE=jessie
+    QEMU_BINARY=/usr/bin/qemu-x86_64-static
 else
     echo -e "The architecture ${1} is not supported"
     exit 1
@@ -129,7 +135,7 @@ prepare_build_env "${1}"
 chroot_exec dpkg --print-architecture
 
 # new forked repo for StartPage
-git clone -b rapha http://build.service:123456@devbase.it4s.eu:3000/IT4S/ConfigurationPage.git "${R}${SRC_DIR}"
+git clone -b rapha http://build.service:123456@devbase.it4s.eu/IT4S/ConfigurationPage.git "${R}${SRC_DIR}"
 
 # build 
 echo -e "Building IT4S - Configpage for $1"

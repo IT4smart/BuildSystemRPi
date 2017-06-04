@@ -5,15 +5,6 @@
 # Load utility functions
 . ./functions.sh
 
-# For Raspbian we didn't know the GPG - Key so we have to export it
-#if [ ${DISTRIBUTION} = "raspbian" ] ; then
-#  if [ -f files/apt/raspbian.public.key ] ; then
-#    rm files/apt/raspbian.public.key
-#  fi
-#  wget http://debian.raspbian.com/raspbian.public.key -O files/apt/raspbian.public.key
-#  gpg --import files/apt/raspbian.public.key 
-#fi
-
 # Base debootstrap (unpack only)
 #
 

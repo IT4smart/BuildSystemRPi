@@ -25,12 +25,19 @@ sed -i "s/\/archive.raspbian.org\//\/${APT_SERVER}\//" "$R/etc/apt/sources.list"
 sed -i "s/ raspbian/ ${DISTRIBUTION}/" "$R/etc/apt/sources.list"
 sed -i "s/ jessie/ ${RELEASE}/" "$R/etc/apt/sources.list"
 
+<<<<<<< HEAD
 # found on raspbian from the foundation.
 if [ "${DISTRIBUTION}" = "raspbian" ] ; then
     echo "deb http://archive.raspberrypi.org/debian/ jessie main ui" > "$R/etc/apt/sources.list.d/raspi.list"
     chroot_exec wget -O /tmp/raspberrypi.gpg.key https://archive.raspberrypi.org/debian/raspberrypi.gpg.key
     chroot_exec apt-key add /tmp/raspberrypi.gpg.key
 fi
+=======
+# Install IT4Smart package repository
+install_readonly files/apt/it4smart.list "$R/etc/apt/sources.list.d/it4smart.list"
+chroot_exec wget http://mirror.it4s.eu/mirror.it4s.eu.gpg.key
+chroot_exec apt-key add mirror.it4s.eu.gpg.key
+>>>>>>> 0cdb28c1c161e1be791abd18d10effd4bd336443
 
 # Upgrade package index and update all installed packages and changed dependencies
 chroot_exec apt-get -qq -y update
