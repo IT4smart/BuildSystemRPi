@@ -28,6 +28,9 @@ cat files/firstboot/24-create-resolv-symlink.sh >> "$R/etc/rc.firstboot"
 # Change hostname
 cat custom.d/files/Firstboot/25-it4s_hostname.sh >> "$R/etc/rc.firstboot"
 
+# Change permission
+cat custom.d/files/Firstboot/26-change_permissions.sh >> "$R/etc/rc.firstboot"
+
 # Finalize rc.firstboot script
 cat files/firstboot/99-finish.sh >> "$R/etc/rc.firstboot"
 chmod +x "$R/etc/rc.firstboot"

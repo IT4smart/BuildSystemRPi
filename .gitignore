@@ -2,4 +2,4 @@ images
 **/*~
 *.swp
 *.log
-*.gpg
+files/apt/raspbianrepokey.gpg

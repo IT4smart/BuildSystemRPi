@@ -15,10 +15,6 @@
 # Copyright (C) 2015 Luca Falavigna <dktrkranz@debian.org>
 ########################################################################
 
-########################################################################
-# Todo IT4S
-#
-########################################################################
 
 # Check if ./functions.sh script exists
 if [ ! -r "./functions.sh" ] ; then
@@ -42,6 +38,7 @@ RELEASE_ARCH=${RELEASE_ARCH:=armhf}
 CROSS_COMPILE=${CROSS_COMPILE:=arm-linux-gnueabihf-}
 COLLABORA_KERNEL=${COLLABORA_KERNEL:=3.18.0-trunk-rpi2}
 KERNEL_DEFCONFIG=${KERNEL_DEFCONFIG:=bcm2709_defconfig}
+KERNEL_IMAGE=${KERNEL_IMAGE:=kernel7.img}
 QEMU_BINARY=${QEMU_BINARY:=/usr/bin/qemu-arm-static}
 
 # Build settings
@@ -375,19 +372,21 @@ umount -l "$R/proc"
 umount -l "$R/sys"
 
 # Clean up directories
-rm -rf "$R/run"
+rm -rf "$R/run/*"
 rm -rf "$R/tmp/*"
 
 # Clean up files
-rm -f "$R/etc/apt/sources.list.save"
-rm -f "$R/etc/resolvconf/resolv.conf.d/original"
-rm -f "$R/etc/*-"
-rm -f "$R/root/.bash_history"
-rm -f "$R/var/lib/urandom/random-seed"
-rm -f "$R/var/lib/dbus/machine-id"
-rm -f "$R/etc/machine-id"
-rm -f "$R/etc/apt/apt.conf.d/10proxy"
-rm -f "$R/etc/resolv.conf"
+rm -f "${ETC_DIR}/ssh/ssh_host_*"
+rm -f "${ETC_DIR}/dropbear/dropbear_*"
+rm -f "${ETC_DIR}/apt/sources.list.save"
+rm -f "${ETC_DIR}/resolvconf/resolv.conf.d/original"
+rm -f "${ETC_DIR}/*-"
+rm -f "${ETC_DIR}/apt/apt.conf.d/10proxy"
+rm -f "${ETC_DIR}/resolv.conf"
+rm -f "${R}/root/.bash_history"
+rm -f "${R}/var/lib/urandom/random-seed"
+rm -f "${R}/initrd.img"
+rm -f "${R}/vmlinuz"
 rm -f "${R}${QEMU_BINARY}"
 
 # Calculate size of the chroot directory in KB
@@ -460,8 +459,8 @@ mkfs.ext4 "$ROOT_LOOP"
 mkdir -p "$BUILDDIR/mount"
 mount "$ROOT_LOOP" "$BUILDDIR/mount"
 
-mkdir -p "$BUILDDIR/mount/boot/firmware"
-mount "$FRMW_LOOP" "$BUILDDIR/mount/boot/firmware"
+mkdir -p "$BUILDDIR/mount/boot"
+mount "$FRMW_LOOP" "$BUILDDIR/mount/boot"
 
 # Copy all files from the chroot to the loop device mount point directory
 rsync -a "$R/" "$BUILDDIR/mount/"

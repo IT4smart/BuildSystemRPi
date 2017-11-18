@@ -5,19 +5,8 @@
 # Load utility functions
 . ./functions.sh
 
-# For Raspbian we didn't know the GPG - Key so we have to export it
-#if [ ${DISTRIBUTION} = "raspbian" ] ; then
-#  if [ -f files/apt/raspbian.public.key ] ; then
-#    rm files/apt/raspbian.public.key
-#  fi
-#  wget http://debian.raspbian.com/raspbian.public.key -O files/apt/raspbian.public.key
-#  gpg --import files/apt/raspbian.public.key 
-#fi
-
 # Base debootstrap (unpack only)
 #
-# Todo
-# - in future add a all keyrings
 
 if [ "$ENABLE_MINBASE" = true ] ; then
   http_proxy=${APT_PROXY} debootstrap --arch="${RELEASE_ARCH}" --variant=minbase $REPOKEY --foreign --include="${APT_INCLUDES}" "${RELEASE}" "$R" "http://${APT_SERVER}/${DISTRIBUTION}"

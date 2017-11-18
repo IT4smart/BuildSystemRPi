@@ -51,3 +51,6 @@ disable_overscan=1
 # uncomment to overclock the arm. 700 MHz is the default.
 #arm_freq=800
 gpu_mem=256
+
+# enable sound
+dtparam=audio=on
