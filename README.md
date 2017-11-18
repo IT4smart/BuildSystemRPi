@@ -1,6 +1,6 @@
 # BuildSystemRPi
 This Repository based on the work of [drtyhlpr](https://github.com/drtyhlpr/rpi23-gen-image).
-Check out the [BuildSystemRPi documentation] (http://devbase.it4s.eu:3000/IT4S/BuildSystemRPi/wiki/Home) for more information, installation instructions, and troubleshooting.
+Check out the [BuildSystemRPi documentation]() for more information, installation instructions, and troubleshooting.
 
 #### Development and Contributing
 See the [dev](https://github.com/IT4smart/BuildSystemRPi/tree/master) branch for features that are currently in development.
