@@ -93,21 +93,20 @@ if [ "$BUILD_KERNEL" = true ] ; then
   chroot_exec apt-get -qq -y --no-install-recommends install raspberrypi-bootloader-nokernel
 else # BUILD_KERNEL=false
   # Kernel installation
-  #chroot_exec apt-get -qq -y --no-install-recommends install linux-image-"${COLLABORA_KERNEL}" raspberrypi-bootloader-nokernel
-  chroot_exec apt-get -qq -y --no-install-recommends install raspberrypi-kernel raspberrypi-bootloader
+  chroot_exec apt-get -qq -y --no-install-recommends install linux-image-"${COLLABORA_KERNEL}" raspberrypi-bootloader-nokernel
 
   # Install flash-kernel last so it doesn't try (and fail) to detect the platform in the chroot
   #chroot_exec apt-get -qq -y install flash-kernel
 
   # Check if kernel installation was successful
-  #VMLINUZ="$(ls -1 ${R}/boot/vmlinuz-* | sort | tail -n 1)"
-  #if [ -z "$VMLINUZ" ] ; then
-  #  echo "error: kernel installation failed! (/boot/vmlinuz-* not found)"
-  #  cleanup
-  #  exit 1
-  #fi
+  VMLINUZ="$(ls -1 ${R}/boot/vmlinuz-* | sort | tail -n 1)"
+  if [ -z "$VMLINUZ" ] ; then
+    echo "error: kernel installation failed! (/boot/vmlinuz-* not found)"
+    cleanup
+    exit 1
+  fi
   # Copy vmlinuz kernel to the boot directory
-  #install_readonly "${VMLINUZ}" "$R/boot/${KERNEL_IMAGE}"
+  install_readonly "${VMLINUZ}" "$R/boot/${KERNEL_IMAGE}"
 fi
 
 # Setup firmware boot cmdline

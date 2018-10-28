@@ -6,7 +6,7 @@ Zum Schluss alles hashen und gut. ``sudo c_rehash /opt/Citrix/ICAClient/keystore
 
 Um die IT4S Anwendungen zum laufen zu bekommen muss das entsprechende Archiv nach '/opt/' kopiert werden und dort entpackt werden ``tar -xf IT4S_XXXXXX.tar``. zusätzlich ist das Paket qt5-default zu installieren ``sudo apt-get install qt5-default``
 
-Nun legen wir die Datei ``.xsession`` an. 
+Nun legen wir die Datei ``.xsession`` an.
 '#!/bin/bash
 /opt/IT4S/StartPage.sh &
 xfwm4'
@@ -22,11 +22,10 @@ Das Paket ``sudo apt-get install udisks-glue`` installieren damit USB - Sticks e
 https://github.com/osmc/osmc/blob/master/package/diskmount-osmc/files/lib/systemd/system/udisks-glue.service
 
 ## Autocompletion ##
-Um unter Debian auf dem Terminal eine autovervollständigung zu bekommen sind folgende pakete zu installieren ``sudo apt-get install bash-completion apt-utils``.
+Um unter Debian auf dem Terminal eine Autovervollständigung zu bekommen sind folgende pakete zu installieren ``sudo apt-get install bash-completion apt-utils``.
 
 ## Keybindings ##
-Um Shortcuts zu erstellen muss das Paket ``sudo apt-get install xbindkeys`` installiert werden. 
-Dann im Home - Verzeichnis die Datei ``.xbindkeysrc``. Dort muss dann der Inhalt 
+Um Shortcuts zu erstellen muss das Paket ``sudo apt-get install xbindkeys`` installiert werden.
+Dann im Home - Verzeichnis die Datei ``.xbindkeysrc``. Dort muss dann der Inhalt
 "/opt/IT4S/ConfigPage.sh"
 shift+control+c
-
