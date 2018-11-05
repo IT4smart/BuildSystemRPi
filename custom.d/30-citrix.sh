@@ -5,23 +5,10 @@
 # Load utility functions
 . ./functions.sh
 
-# prepare to install required packages
+# install required packages, icaclient and ctxusb for usb passthrough support
 if [ "$ENABLE_CITRIX" = true ] ; then
-  APT_INCLUDES="${APT_INCLUDES} libxerces-c3.1 haveged libproxy-tools curl libwebkitgtk-1.0-0"
+  APT_INCLUDES="${APT_INCLUDES} libxerces-c3.1 haveged libproxy-tools curl libwebkitgtk-1.0-0 icaclient=13.3.0.344519 ctxusb=2.6.344519"
   chroot_exec apt-get -qq -y install ${APT_INCLUDES}
-fi
-
-# install citrix receiver
-# check if we can install the packages before install citrix-package
-if [ "$ENABLE_CITRIX" = true ] ; then
-  # copy all necessary files
-  cp custom.d/files/Citrix/* "$R/tmp/"
-
-  # install citrix receiver package
-  chroot_exec dpkg -i /tmp/icaclient_13.3.0.344519_armhf.deb
-
-  # install citrix usb support package
-  chroot_exec dpkg -i /tmp/ctxusb_2.6.344519_armhf.deb
 
   # accept license
   chroot_exec mkdir /home/pi/.ICAClient

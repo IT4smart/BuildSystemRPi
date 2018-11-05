@@ -117,6 +117,8 @@ ENABLE_SPLASH=${ENABLE_SPLASH:=true}
 ENABLE_CITRIX=${ENABLE_CITRIX:=false}
 ENABLE_CITRIX_CUSTOM_CERT=${ENABLE_CITRIX_CUSTOM_CERT:=false}
 ENABLE_AUTOMOUNT=${ENABLE_AUTOMOUNT:=false}
+ENABEL_THINCLIENT=${ENABLE_THINCLIENT:=false}
+THINCLIENT_VERSION=${THINCLIENT_VERSION:="1.0.0"}
 
 # Image chroot path
 R=${BUILDDIR}/chroot
@@ -435,10 +437,11 @@ EOM
   FRMW_LOOP="$(losetup -o 1M --sizelimit 64M -f --show $BASEDIR/${DATE}-debian-${RELEASE}-frmw.img)"
   ROOT_LOOP="$(losetup -o 1M -f --show $BASEDIR/${DATE}-debian-${RELEASE}-root.img)"
 else
-  dd if=/dev/zero of="$BASEDIR/${DATE}-debian-${RELEASE}.img" bs=512 count=${TABLE_SECTORS}
-  dd if=/dev/zero of="$BASEDIR/${DATE}-debian-${RELEASE}.img" bs=512 count=0 seek=${IMAGE_SECTORS}
-  # Write partition table
-  sfdisk -q -f "$BASEDIR/${DATE}-debian-${RELEASE}.img" <<EOM
+  if [ "${ENABLE_THINCLIENT}" = true ]; then
+    dd if=/dev/zero of="$BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img" bs=512 count=${TABLE_SECTORS}
+    dd if=/dev/zero of="$BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img" bs=512 count=0 seek=${IMAGE_SECTORS}
+    # Write partition table
+    sfdisk -q -f "$BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img" <<EOM
 unit: sectors
 
 1 : start=   ${TABLE_SECTORS}, size=   ${FRMW_SECTORS}, Id= c, bootable
@@ -446,9 +449,25 @@ unit: sectors
 3 : start=                  0, size=                 0, Id= 0
 4 : start=                  0, size=                 0, Id= 0
 EOM
-  # Setup temporary loop devices
-  FRMW_LOOP="$(losetup -o 1M --sizelimit 64M -f --show $BASEDIR/${DATE}-debian-${RELEASE}.img)"
-  ROOT_LOOP="$(losetup -o 65M -f --show $BASEDIR/${DATE}-debian-${RELEASE}.img)"
+    # Setup temporary loop devices
+    FRMW_LOOP="$(losetup -o 1M --sizelimit 64M -f --show $BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img)"
+    ROOT_LOOP="$(losetup -o 65M -f --show $BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img)"
+  else
+    dd if=/dev/zero of="$BASEDIR/${DATE}-debian-${RELEASE}.img" bs=512 count=${TABLE_SECTORS}
+    dd if=/dev/zero of="$BASEDIR/${DATE}-debian-${RELEASE}.img" bs=512 count=0 seek=${IMAGE_SECTORS}
+    # Write partition table
+    sfdisk -q -f "$BASEDIR/${DATE}-debian-${RELEASE}.img" <<EOM
+unit: sectors
+
+1 : start=   ${TABLE_SECTORS}, size=   ${FRMW_SECTORS}, Id= c, bootable
+2 : start=     ${ROOT_OFFSET}, size=   ${ROOT_SECTORS}, Id=83
+3 : start=                  0, size=                 0, Id= 0
+4 : start=                  0, size=                 0, Id= 0
+EOM
+    # Setup temporary loop devices
+    FRMW_LOOP="$(losetup -o 1M --sizelimit 64M -f --show $BASEDIR/${DATE}-debian-${RELEASE}.img)"
+    ROOT_LOOP="$(losetup -o 65M -f --show $BASEDIR/${DATE}-debian-${RELEASE}.img)"
+  fi
 fi
 
 # Build filesystems
@@ -478,9 +497,17 @@ if [ "$ENABLE_SPLITFS" = true ] ; then
   echo "$BASEDIR/${DATE}-debian-${RELEASE}-frmw.img ($(expr \( ${TABLE_SECTORS} + ${FRMW_SECTORS} \) \* 512 \/ 1024 \/ 1024)M)" ": successfully created"
   echo "$BASEDIR/${DATE}-debian-${RELEASE}-root.img ($(expr \( ${TABLE_SECTORS} + ${ROOT_SECTORS} \) \* 512 \/ 1024 \/ 1024)M)" ": successfully created"
 else
-  # Create block map file for "bmaptool"
-  bmaptool create -o "$BASEDIR/${DATE}-debian-${RELEASE}.bmap" "$BASEDIR/${DATE}-debian-${RELEASE}.img"
+  if [ "${ENABLE_THINCLIENT}" = true ] ; then
+    # Create block map file for "bmaptool"
+    bmaptool create -o "$BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.bmap" "$BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img"
 
-  # Image was successfully created
-  echo "$BASEDIR/${DATE}-debian-${RELEASE}.img ($(expr \( ${TABLE_SECTORS} + ${FRMW_SECTORS} + ${ROOT_SECTORS} \) \* 512 \/ 1024 \/ 1024)M)" ": successfully created"
+    # Image was successfully created
+    echo "$BASEDIR/${DATE}-debian-${RELEASE}-${THINCLIENT_VERSION}.img ($(expr \( ${TABLE_SECTORS} + ${FRMW_SECTORS} + ${ROOT_SECTORS} \) \* 512 \/ 1024 \/ 1024)M)" ": successfully created"
+  else
+    # Create block map file for "bmaptool"
+    bmaptool create -o "$BASEDIR/${DATE}-debian-${RELEASE}.bmap" "$BASEDIR/${DATE}-debian-${RELEASE}.img"
+
+    # Image was successfully created
+    echo "$BASEDIR/${DATE}-debian-${RELEASE}.img ($(expr \( ${TABLE_SECTORS} + ${FRMW_SECTORS} + ${ROOT_SECTORS} \) \* 512 \/ 1024 \/ 1024)M)" ": successfully created"
+  fi
 fi
