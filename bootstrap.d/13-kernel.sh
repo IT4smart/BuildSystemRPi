@@ -95,9 +95,6 @@ else # BUILD_KERNEL=false
   # Kernel installation
   chroot_exec apt-get -qq -y --no-install-recommends install linux-image-"${COLLABORA_KERNEL}" raspberrypi-bootloader-nokernel
 
-  # Install flash-kernel last so it doesn't try (and fail) to detect the platform in the chroot
-  #chroot_exec apt-get -qq -y install flash-kernel
-
   # Check if kernel installation was successful
   VMLINUZ="$(ls -1 ${R}/boot/vmlinuz-* | sort | tail -n 1)"
   if [ -z "$VMLINUZ" ] ; then
