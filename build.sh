@@ -36,7 +36,8 @@ if [ ${arch} = "rpi2" ]; then
     export ENABLE_CITRIX=true
     export ENABLE_AUTOMOUNT=true
     export ENABLE_BOOTSPLASH=true
-    
+    export ENABLE_THINCLIENT=true
+
     # select the customization option for the specific project
     if [ ${project} = "ass" ]; then
         #export NET_NTP_1=172.16.0.1
