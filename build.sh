@@ -21,6 +21,9 @@ rm -rf ./images
 # Logging?
 export BUILD_LOG=true
 
+# General settings
+export IT4SMART_VERSION=1.0.0
+
 # check the architecture
 if [ ${arch} = "rpi2" ]; then
     # set customization options
@@ -30,19 +33,23 @@ if [ ${arch} = "rpi2" ]; then
     export ENABLE_CONSOLE=false
     export ENABLE_SPLASH=true
     export ENABLE_VCHIQ=true
-    export ENABLE_WM="xfce4"
     export APT_SERVER=mirrordirector.raspbian.org
     export DISTRIBUTION=raspbian
-    export ENABLE_CITRIX=true
-    export ENABLE_AUTOMOUNT=true
     export ENABLE_BOOTSPLASH=true
-    export ENABLE_THINCLIENT=true
+    export COLLABORA_KERNEL=rpi2-rpfv
 
     # select the customization option for the specific project
     if [ ${project} = "ass" ]; then
+        export ENABLE_WM="xfce4"
+        export ENABLE_CITRIX=true
+        export ENABLE_AUTOMOUNT=true
+        export ENABLE_THINCLIENT=true
         #export NET_NTP_1=172.16.0.1
         export ENABLE_CITRIX_CUSTOM_CERT=true
-        export COLLABORA_KERNEL=rpi2-rpfv
+    fi
+
+    if [ ${project} = "ubnt" ]; then
+      export ENABLE_UBNT=true
     fi
 fi
 

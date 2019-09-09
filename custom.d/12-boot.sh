@@ -15,3 +15,6 @@ if [ "$ENABLE_BOOTSPLASH" = true ] ; then
 	# change boot logo from debian to it4s
 	cp "custom.d/files/Desktop/IT4S_151px_319px.png" "$R/usr/share/plymouth/debian-logo.png"
 fi
+
+APT_INCLUDES="base-files-it4smart"
+chroot_exec apt-get -y -qq install ${APT_INCLUDES}
