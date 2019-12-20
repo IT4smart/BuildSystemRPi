@@ -2,15 +2,15 @@ defaults: &defaults
   working_directory: /tmp
 
 version: 2
-    jobs:
-        test-commit:
-            <<: *defaults
-            machine: true
-            steps:
-                - checkout
-                - run:
-                    name: Build rpi2 thinclient
-                    command: make rpi2-thinclient
+jobs:
+    test-commit:
+        <<: *defaults
+        machine: true
+        steps:
+            - checkout
+            - run:
+                name: Build rpi2 thinclient
+                command: make rpi2-thinclient
 workflows:
     version: 2
     snapshot:
