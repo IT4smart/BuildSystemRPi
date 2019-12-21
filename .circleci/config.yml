@@ -15,8 +15,13 @@ jobs:
             - run:
                 name: Build rpi2 thinclient
                 command: make rpi2-thinclient
+            - run:
+                name: Save build images
+                command: |
+                    mkdir -p ~/tmp
+                    mv ~/repo/images/*/*.img* ~/tmp
             - store_artifacts:
-                path: ~/repo/images
+                path: ~/tmp
 workflows:
     version: 2
     snapshot:
