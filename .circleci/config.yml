@@ -19,7 +19,7 @@ jobs:
                 name: Save build images
                 command: |
                     mkdir -p ~/tmp
-                    mv ~/repo/images/*/*.img* ~/tmp
+                    sudo mv ~/repo/images/*/*.img* ~/tmp
             - store_artifacts:
                 path: ~/tmp
 workflows:
