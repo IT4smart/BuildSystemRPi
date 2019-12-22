@@ -3,7 +3,7 @@
 #
 # Jessie: unifi 5.6.39
 if [ "${ENABLE_UBNT}" = true ] ; then
-  APT_INCLUDES="base-files-controller-it4smart"
+  APT_INCLUDES="base-files-controller-it4smart avahi-daemon"
   chroot_exec apt-get -qq -y install ${APT_INCLUDES}
 fi
 

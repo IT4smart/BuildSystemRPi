@@ -50,6 +50,7 @@ if [ ${arch} = "rpi2" ]; then
 
     if [ ${project} = "ubnt" ]; then
       export ENABLE_UBNT=true
+      export HOSTNAME="ubnt-it4smart"
     fi
 fi
 
