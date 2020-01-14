@@ -20,11 +20,15 @@ jobs:
                 name: Build rpi2 ubiquiti controller
                 command: make rpi2-ubnt
             - run:
+                name: Save build log
+                command: |
+                    mkdir -p ~/tmp
+                    sudo mv ~/repo/build.log ~/tmp
+            - run:
                 name: Save build images
                 command: |
                     mkdir -p ~/tmp
                     sudo mv ~/repo/images/*/*.img* ~/tmp
-                    sudo mv ~/repo/build.log ~/tmp
             - store_artifacts:
                 path: ~/tmp
     ubnt-controller-buster:
@@ -38,11 +42,15 @@ jobs:
                 name: Build rpi2 ubiquiti controller
                 command: make rpi2-ubnt-buster
             - run:
+                name: Save build log
+                command: |
+                    mkdir -p ~/tmp
+                    sudo mv ~/repo/build.log ~/tmp
+            - run:
                 name: Save build images
                 command: |
                     mkdir -p ~/tmp
                     sudo mv ~/repo/images/*/*.img* ~/tmp
-                    sudo mv ~/repo/build.log ~/tmp
             - store_artifacts:
                 path: ~/tmp
     test-commit:
