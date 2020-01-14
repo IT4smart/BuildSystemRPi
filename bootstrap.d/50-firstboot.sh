@@ -25,11 +25,13 @@ cat files/firstboot/23-generate-machineid.sh >> "$R/etc/rc.firstboot"
 # Create /etc/resolv.conf symlink
 cat files/firstboot/24-create-resolv-symlink.sh >> "$R/etc/rc.firstboot"
 
-# Change hostname
-cat custom.d/files/Firstboot/25-it4s_hostname.sh >> "$R/etc/rc.firstboot"
+if [ "$ENABLE_THINCLIENT" = true ] ; then
+  # Change hostname
+  cat custom.d/files/Firstboot/25-it4s_hostname.sh >> "$R/etc/rc.firstboot"
 
-# Change permission
-cat custom.d/files/Firstboot/26-change_permissions.sh >> "$R/etc/rc.firstboot"
+  # Change permission
+  cat custom.d/files/Firstboot/26-change_permissions.sh >> "$R/etc/rc.firstboot"
+fi
 
 # Finalize rc.firstboot script
 cat files/firstboot/99-finish.sh >> "$R/etc/rc.firstboot"

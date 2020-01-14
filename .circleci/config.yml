@@ -1,0 +1,58 @@
+defaults: &defaults
+  working_directory: ~/repo
+  machine: true
+  steps:
+    - checkout
+    - run:
+        name: Install packages
+        command: sudo apt-get update && sudo apt-get install -y --no-install-recommends debootstrap debian-archive-keyring qemu-user-static bmap-tools whois
+
+version: 2
+jobs:
+    ubnt-controller-jessie:
+        <<: *defaults
+        steps:
+            - checkout
+            - run:
+                name: Install packages
+                command: sudo apt-get update && sudo apt-get install -y --no-install-recommends debootstrap debian-archive-keyring qemu-user-static bmap-tools whois
+            - run:
+                name: Build rpi2 thinclient
+                command: make rpi2-ubnt
+            - run:
+                name: Save build images
+                command: |
+                    mkdir -p ~/tmp
+                    sudo mv ~/repo/images/*/*.img* ~/tmp
+            - store_artifacts:
+                path: ~/tmp
+    test-commit:
+        <<: *defaults
+        steps:
+            - checkout
+            - run:
+                name: Install packages
+                command: sudo apt-get update && sudo apt-get install -y --no-install-recommends debootstrap debian-archive-keyring qemu-user-static bmap-tools whois
+            - run:
+                name: Build rpi2 thinclient
+                command: make rpi2-thinclient
+            - run:
+                name: Save build images
+                command: |
+                    mkdir -p ~/tmp
+                    sudo mv ~/repo/images/*/*.img* ~/tmp
+            - store_artifacts:
+                path: ~/tmp
+workflows:
+    version: 2
+    release:
+        jobs:
+            - ubnt-controller-jessie:
+                filters:
+                    tags:
+                      ignore: /v[0-9]+\.[0-9]+\.[0-9]+/
+                    branches:
+                      only: master
+    snapshot:
+        jobs:
+            - test-commit
