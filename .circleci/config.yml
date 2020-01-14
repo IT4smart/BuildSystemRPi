@@ -80,4 +80,7 @@ workflows:
                         only: master
     snapshot:
         jobs:
-            - test-commit
+            - test-commit:
+                filters:
+                    branches:
+                        ignore: master
