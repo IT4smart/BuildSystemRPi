@@ -120,13 +120,14 @@ ENABLE_AUTOMOUNT=${ENABLE_AUTOMOUNT:=false}
 ENABLE_THINCLIENT=${ENABLE_THINCLIENT:=false}
 THINCLIENT_VERSION=${THINCLIENT_VERSION:="1.0.0"}
 ENABLE_SCREENSAVER=${ENABLE_SCREENSAVER:=false}
+ENABLE_UBNT=${ENABLE_UBNT:=false}
 
 # Image chroot path
 R=${BUILDDIR}/chroot
 CHROOT_SCRIPTS=${CHROOT_SCRIPTS:=""}
 
 # Packages required for bootstrapping
-REQUIRED_PACKAGES="debootstrap debian-archive-keyring qemu-user-static binfmt-support dosfstools rsync bmap-tools whois git-core"
+REQUIRED_PACKAGES="debootstrap debian-archive-keyring qemu-user-static binfmt-support dosfstools rsync bmap-tools whois git"
 
 # Missing packages that need to be installed
 MISSING_PACKAGES=""
@@ -338,7 +339,6 @@ if [ "$ENABLE_REDUCE" = true ] ; then
   # Install APT configuration fragment files
   install_readonly files/apt/02nocache "$R/etc/apt/apt.conf.d/02nocache"
   install_readonly files/apt/03compress "$R/etc/apt/apt.conf.d/03compress"
-  install_readonly files/apt/04norecommends "$R/etc/apt/apt.conf.d/04norecommends"
 
   # Remove APT cache files
   rm -fr "$R/var/cache/apt/pkgcache.bin"
@@ -490,12 +490,24 @@ fi
 
 if [ "${ENABLE_THINCLIENT}" = true ] ; then
   if [ "${ENABLE_SPLITFS}" = true ] ; then
-    mv "${BASEDIR}/${DATE}-debian-${RELEASE}-frmw.img" "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERSION}-frmw.img"
-    echo -n "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERSION}-frmw.img" | sha256sum > "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERSION}-frmw.img.sha256sum"
-    mv "${BASEDIR}/${DATE}-debian-${RELEASE}-root.img" "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERISON}-root.img"
-    echo -n "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERISON}-root.img" | sha256sum > "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERISON}-root.img.sha256"
+    mv "${BASEDIR}/${DATE}-debian-${RELEASE}-frmw.img" "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-frmw.img"
+    echo -n "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-frmw.img" | sha256sum > "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-frmw.img.sha256sum"
+    mv "${BASEDIR}/${DATE}-debian-${RELEASE}-root.img" "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-root.img"
+    echo -n "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-root.img" | sha256sum > "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-root.img.sha256"
   else
-    mv "${BASEDIR}/${DATE}-debian-${RELEASE}.img" "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERSION}.img"
-    echo -n "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERSION}.img" | sha256sum > "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${THINCLIENT_VERSION}.img.sha256"
+    mv "${BASEDIR}/${DATE}-debian-${RELEASE}.img" "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}.img"
+    echo -n "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}.img" | sha256sum > "${BASEDIR}/TC-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}.img.sha256"
+  fi
+fi
+
+if [ "${ENABLE_UBNT}" = true ] ; then
+  if [ "${ENABLE_SPLITFS}" = true ] ; then
+    mv "${BASEDIR}/${DATE}-debian-${RELEASE}-frmw.img" "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-frmw.img"
+    echo -n "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-frmw.img" | sha256sum > "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-frmw.img.sha256sum"
+    mv "${BASEDIR}/${DATE}-debian-${RELEASE}-root.img" "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-root.img"
+    echo -n "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-root.img" | sha256sum > "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}-root.img.sha256"
+  else
+    mv "${BASEDIR}/${DATE}-debian-${RELEASE}.img" "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}.img"
+    echo -n "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}.img" | sha256sum > "${BASEDIR}/UBNT-${DISTRIBUTION}-${RELEASE}-${IT4SMART_VERSION}.img.sha256"
   fi
 fi

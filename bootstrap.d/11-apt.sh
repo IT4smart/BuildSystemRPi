@@ -40,6 +40,14 @@ chroot_exec wget http://mirror.it4smart.eu/mirror.it4smart.eu.gpg.key
 chroot_exec apt-key add mirror.it4smart.eu.gpg.key
 chroot_exec rm mirror.it4smart.eu.gpg.key
 
+if [ "${ENABLE_UBNT}" = true ] ; then
+  install_readonly files/apt/docker.list "$R/etc/apt/sources.list.d/docker.list"
+  sed -i "s/ jessie/ ${RELEASE}/" "$R/etc/apt/sources.list.d/docker.list"
+  chroot_exec wget https://download.docker.com/linux/debian/gpg
+  chroot_exec apt-key add gpg
+  chroot_exec rm gpg
+fi
+
 # Upgrade package index and update all installed packages and changed dependencies
 chroot_exec apt-get -qq -y update
 chroot_exec apt-get -qq -y -u dist-upgrade
