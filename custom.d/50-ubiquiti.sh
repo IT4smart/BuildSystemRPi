@@ -12,7 +12,14 @@ if [ "${ENABLE_UBNT}" = true ] ; then
   APT_INCLUDES="docker docker-engine docker.io"
   chroot_exec apt-get -qq -y remove ${APT_INCLUDES}
 
-  APT_INCLUDES="apt-transport-https ca-certificates curl gnupg2 software-properties-common docker-ce unifi-controller-it4smart"
+  if [ ${RELEASE} = "buster" ] ; then
+    APT_INCLUDES="unifi-controller-it4smart=1.2.1~deb10"
+  fi
+
+  if [ ${RELEASE} = "jessie" ] || [ ${RELEASE} = "stretch" ] ; then
+    APT_INCLUDES="unifi-controller-it4smart"
+  fi
+  APT_INCLUDES="apt-transport-https ca-certificates curl gnupg2 software-properties-common docker-ce ${APT_INCLUDES}"
   chroot_exec apt-get -qq -y install ${APT_INCLUDES}
 
   # Set message for users to know which ip the device has
