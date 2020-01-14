@@ -15,7 +15,13 @@ if [ ${ENABLE_THINCLIENT} = true ] ; then
   chroot_exec apt-get -qq -y install ${APT_INCLUDES}
 
   # install IT4smart Apps
-  APT_INCLUDES="rpb2-device-thinclient-it4smart=1.0.0~deb8"
+  if [ ${RELEASE} = "jessie" ] ; then
+    APT_INCLUDES="rpb2-device-thinclient-it4smart=1.0.0~deb8"
+  fi
+
+  if [ ${RELEASE} = "buster" ] ; then
+    APT_INCLUDES="rpb2-device-thinclient-it4smart=1.0.0~deb10"
+  fi
   chroot_exec apt-get install -y ${APT_INCLUDES}
 
   # copy cleanup script
@@ -29,4 +35,8 @@ if [ ${ENABLE_THINCLIENT} = true ] ; then
 
   # configure nodm
   cp custom.d/files/Desktop/nodm "$R/etc/default/nodm"
+fi
+
+if [ ${ENABLE_SCREENSAVER} = true ] ; then
+  cp custom.d/files/Desktop/.xinitrc "$R/home/pi/.xinitrc"
 fi

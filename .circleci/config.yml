@@ -34,8 +34,8 @@ jobs:
                 name: Install packages
                 command: sudo apt-get update && sudo apt-get install -y --no-install-recommends debootstrap debian-archive-keyring qemu-user-static bmap-tools whois
             - run:
-                name: Build rpi2 thinclient
-                command: make rpi2-thinclient
+                name: Build rpi2-tc-ass-jessie
+                command: make rpi2-tc-ass-jessie
             - run:
                 name: Save build images
                 command: |

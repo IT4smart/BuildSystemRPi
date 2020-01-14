@@ -1,13 +1,16 @@
 #!/usr/bin/make
 
 all:
-	@echo 'Specify a target and project:\nmake rpi2-thinclient\nmake rpi2-mirror\nrpi2-ubnt'
+	@echo 'Specify a target and project:\nmake rpi2-tc-ass-jessie\nrpi2-tc-ass-buster\nmake rpi2-mirror\nrpi2-ubnt'
 
-rpi2-thinclient:
-	sudo bash build.sh "rpi2" "ass"
+rpi2-tc-ass-jessie:
+	sudo bash build.sh "rpi2" "ass" "jessie"
 
-rpi2-ubnt:
-	sudo bash build.sh "rpi2" "ubnt"
+rpi2-tc-ass-buster:
+	sudo bash build.sh "rpi2" "ass" "buster"
+
+rpi2-ubnt-buster:
+	sudo bash build.sh "rpi2" "ubnt" "buster"
 
 rpi2-mirror:
 	sudo bash build.sh

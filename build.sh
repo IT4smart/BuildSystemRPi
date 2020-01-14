@@ -3,6 +3,7 @@
 # commandline arguments
 arch=$1
 project=$2
+release=$3
 
 #################################################
 # Define all Variables for customization
@@ -20,6 +21,7 @@ rm -rf ./images
 
 # Logging?
 export BUILD_LOG=true
+export RELEASE=${release}
 
 # General settings
 export IT4SMART_VERSION=1.0.0
