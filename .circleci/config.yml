@@ -26,23 +26,23 @@ jobs:
                     sudo mv ~/repo/images/*/*.img* ~/tmp
             - store_artifacts:
                 path: ~/tmp
-        ubnt-controller-buster:
-            <<: *defaults
-            steps:
-                - checkout
-                - run:
-                    name: Install packages
-                    command: sudo apt-get update && sudo apt-get install -y --no-install-recommends debootstrap debian-archive-keyring qemu-user-static bmap-tools whois
-                - run:
-                    name: Build rpi2 ubiquiti controller
-                    command: make rpi2-ubnt-buster
-                - run:
-                    name: Save build images
-                    command: |
-                        mkdir -p ~/tmp
-                        sudo mv ~/repo/images/*/*.img* ~/tmp
-                - store_artifacts:
-                    path: ~/tmp
+    ubnt-controller-buster:
+        <<: *defaults
+        steps:
+            - checkout
+            - run:
+                name: Install packages
+                command: sudo apt-get update && sudo apt-get install -y --no-install-recommends debootstrap debian-archive-keyring qemu-user-static bmap-tools whois
+            - run:
+                name: Build rpi2 ubiquiti controller
+                command: make rpi2-ubnt-buster
+            - run:
+                name: Save build images
+                command: |
+                    mkdir -p ~/tmp
+                    sudo mv ~/repo/images/*/*.img* ~/tmp
+            - store_artifacts:
+                path: ~/tmp
     test-commit:
         <<: *defaults
         steps:
