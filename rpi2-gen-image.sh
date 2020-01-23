@@ -134,7 +134,7 @@ MISSING_PACKAGES=""
 
 # Packages required in the chroot build environment
 APT_INCLUDES=${APT_INCLUDES:=""}
-APT_INCLUDES="${APT_INCLUDES},apt-transport-https,apt-utils,ca-certificates,dialog,sudo"
+APT_INCLUDES="${APT_INCLUDES},apt-transport-https,apt-utils,ca-certificates,dialog,sudo,wget"
 
 set +x
 
