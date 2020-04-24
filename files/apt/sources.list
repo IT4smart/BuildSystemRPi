@@ -1,5 +1,6 @@
-deb http://archive.raspbian.org/raspbian/ jessie main contrib firmware non-free rpi
-deb-src http://archive.raspbian.org/raspbian/ jessie main contrib firmware non-free rpi
+deb http://raspbian.raspberrypi.org/raspbian/ jessie main contrib non-free rpi
+#deb http://archive.raspbian.org/raspbian/ jessie main contrib firmware non-free rpi
+#deb-src http://archive.raspbian.org/raspbian/ jessie main contrib firmware non-free rpi
 
 # only for kernel
 # we delete it later

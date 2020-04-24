@@ -38,6 +38,10 @@ cat files/firstboot/99-finish.sh >> "$R/etc/rc.firstboot"
 chmod +x "$R/etc/rc.firstboot"
 
 # Add rc.firstboot script to rc.local
+if [ ! -f "${ETC_DIR}/rc.local" ] ; then
+  install_readonly files/etc/rc.local "$R/etc/rc.local"
+  chroot_exec chmod +x /etc/rc.local
+fi
 sed -i '/exit 0/d' "$R/etc/rc.local"
 echo /etc/rc.firstboot >> "$R/etc/rc.local"
 echo exit 0 >> "$R/etc/rc.local"

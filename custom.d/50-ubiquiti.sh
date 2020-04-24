@@ -24,4 +24,6 @@ if [ "${ENABLE_UBNT}" = true ] ; then
 
   # Set message for users to know which ip the device has
   chroot_exec echo "Ubiquiti Controller: https://\\4:8443" >> "$R/etc/issue"
+
+  chroot_exec systemctl enable unifi.service
 fi

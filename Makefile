@@ -12,6 +12,9 @@ rpi2-tc-ass-buster:
 rpi2-ubnt-buster:
 	sudo bash build.sh "rpi2" "ubnt" "buster"
 
+rpi2-ubnt-stretch:
+	sudo bash build.sh "rpi2" "ubnt" "stretch"
+
 rpi2-ubnt:
 	sudo bash build.sh "rpi2" "ubnt" "jessie"
 

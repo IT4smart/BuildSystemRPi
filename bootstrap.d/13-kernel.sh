@@ -93,24 +93,30 @@ if [ "$BUILD_KERNEL" = true ] ; then
   chroot_exec apt-get -qq -y --no-install-recommends install raspberrypi-bootloader-nokernel
 else # BUILD_KERNEL=false
   # Kernel installation
-  chroot_exec apt-get -qq -y --no-install-recommends install linux-image-"${COLLABORA_KERNEL}" raspberrypi-bootloader-nokernel
+  if [ "${RELEASE}" = "buster" ] || [ "${RELEASE}" = "stretch" ]; then
+    chroot_exec apt-get -qq -y --no-install-recommends install raspberrypi-kernel
+    chroot_exec apt-get -qq -y --no-install-recommends install raspberrypi-bootloader
+  else
+    chroot_exec apt-get -qq -y --no-install-recommends install linux-image-"${COLLABORA_KERNEL}" raspberrypi-bootloader-nokernel
 
-  # Check if kernel installation was successful
-  VMLINUZ="$(ls -1 ${R}/boot/vmlinuz-* | sort | tail -n 1)"
-  if [ -z "$VMLINUZ" ] ; then
-    echo "error: kernel installation failed! (/boot/vmlinuz-* not found)"
-    cleanup
-    exit 1
+
+    # Check if kernel installation was successful
+    VMLINUZ="$(ls -1 ${R}/boot/vmlinuz-* | sort | tail -n 1)"
+    if [ -z "$VMLINUZ" ] ; then
+      echo "error: kernel installation failed! (/boot/vmlinuz-* not found)"
+      cleanup
+      exit 1
+    fi
+    # Copy vmlinuz kernel to the boot directory
+    install_readonly "${VMLINUZ}" "$R/boot/${KERNEL_IMAGE}"
   fi
-  # Copy vmlinuz kernel to the boot directory
-  install_readonly "${VMLINUZ}" "$R/boot/${KERNEL_IMAGE}"
 fi
 
 # Setup firmware boot cmdline
 if [ "$ENABLE_SPLITFS" = true ] ; then
-  CMDLINE="dwc_otg.lpm_enable=0 root=/dev/sda1 rootfstype=ext4 rootflags=commit=100,data=writeback elevator=deadline rootwait net.ifnames=1 ${CMDLINE}"
+  CMDLINE="dwc_otg.lpm_enable=0 root=/dev/sda1 rootfstype=ext4 rootflags=commit=100,data=writeback elevator=deadline rootwait net.ifnames=0 ${CMDLINE}"
 else
-  CMDLINE="dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rootfstype=ext4 rootflags=commit=100,data=writeback elevator=deadline rootwait net.ifnames=1 ${CMDLINE}"
+  CMDLINE="dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rootfstype=ext4 rootflags=commit=100,data=writeback elevator=deadline rootwait net.ifnames=0 ${CMDLINE}"
 fi
 
 # Add serial console support

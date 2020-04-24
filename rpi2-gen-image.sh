@@ -136,6 +136,8 @@ MISSING_PACKAGES=""
 APT_INCLUDES=${APT_INCLUDES:=""}
 APT_INCLUDES="${APT_INCLUDES},apt-transport-https,apt-utils,ca-certificates,dialog,sudo,wget"
 
+APT_REMOVES=${APT_REMOVES:=""}
+
 set +x
 
 # Are we running as root?

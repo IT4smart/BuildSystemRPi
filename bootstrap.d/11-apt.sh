@@ -27,6 +27,7 @@ sed -i "s/ jessie/ ${RELEASE}/" "$R/etc/apt/sources.list"
 
 if [ "${DISTRIBUTION}" = "raspbian" ] ; then
 	install_readonly files/apt/raspi.list "$R/etc/apt/sources.list.d/raspi.list"
+  sed -i "s/ jessie/ ${RELEASE}/" "$R/etc/apt/sources.list.d/raspi.list"
 	chroot_exec wget http://archive.raspberrypi.org/debian/raspberrypi.gpg.key
 	chroot_exec apt-key add raspberrypi.gpg.key
 	chroot_exec rm raspberrypi.gpg.key

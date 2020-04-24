@@ -25,7 +25,9 @@ if [ "$ENABLE_IPV6" = false ] ; then
 fi
 
 # Install hint about network configuration
-install_readonly files/network/interfaces "$R/etc/network/interfaces"
+if [ "${RELEASE}" = "jessie" ]; then
+  install_readonly files/network/interfaces "$R/etc/network/interfaces"
+fi
 
 # Install configuration for interface eth0
 install_readonly files/network/eth.network "$R/etc/systemd/network/eth.network"

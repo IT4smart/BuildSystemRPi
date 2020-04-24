@@ -54,6 +54,10 @@ if [ ${arch} = "rpi2" ]; then
       export ENABLE_UBNT=true
       export HOSTNAME="ubnt-it4smart"
     fi
+
+    if [ "${release}" = "buster" ]; then
+      APT_INCLUDES="systemd"
+    fi
 fi
 
 # set debootstrap flag for raspbianrepokey if raspbian
